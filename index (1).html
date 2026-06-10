@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ereska — video editing, videography, motion design</title>
+
+  <!-- Google Fonts: Inter (body) + Space Grotesk (display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET & BASE ────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #ffffff;
+      --ink:       #0d0d0d;
+      --mid:       #555555;
+      --muted:     #999999;
+      --navy:      #0d1240;   /* blok showreel / karty */
+      --accent:    #0d0d0d;
+      --font-disp: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --max-w:     1280px;
+      --pad-x:     clamp(24px, 5vw, 80px);
+      --pad-y:     clamp(60px, 8vh, 100px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* ── HEADER / NAV ────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid #e8e8e8;
+      padding: 18px var(--pad-x);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .logo-block { display: flex; flex-direction: column; gap: 2px; }
+
+    .logo {
+      font-family: var(--font-disp);
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .logo-sub {
+      font-family: var(--font-body);
+      font-size: clamp(11px, 1.3vw, 13px);
+      font-weight: 400;
+      color: var(--mid);
+      letter-spacing: 0.02em;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(20px, 3vw, 40px);
+      padding-top: 4px; /* align with logo baseline */
+    }
+
+    nav a {
+      font-family: var(--font-disp);
+      font-size: clamp(13px, 1.4vw, 15px);
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--mid); }
+
+    /* ── SHOWREEL ────────────────────────────────────── */
+    #showreel {
+      padding: clamp(28px, 4vh, 48px) var(--pad-x) var(--pad-y);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .showreel-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 7;   /* szeroki prostokąt jak w inspiracji */
+      background: var(--navy);
+      overflow: hidden;
+    }
+
+    .showreel-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* placeholder gdy brak iframe */
+    .showreel-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.25);
+      font-family: var(--font-disp);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── WORK ────────────────────────────────────────── */
+    #work {
+      padding: 0 var(--pad-x) var(--pad-y);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-disp);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      margin-bottom: clamp(24px, 3vh, 40px);
+      letter-spacing: -0.5px;
+    }
+
+    /* Karuzela */
+    .carousel-wrapper {
+      position: relative;
+    }
+
+    .carousel-track-outer {
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: clamp(16px, 2vw, 28px);
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    /* każda karta = 1/3 szerokości (3 widoczne) minus gap */
+    .film-card {
+      flex: 0 0 calc((100% - 2 * clamp(16px, 2vw, 28px)) / 3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .film-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: var(--navy);
+      overflow: hidden;
+    }
+
+    .film-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* placeholder */
+    .film-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.3);
+      font-family: var(--font-disp);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .film-meta {
+      padding: 14px 0 0;
+    }
+
+    .film-title {
+      font-family: var(--font-disp);
+      font-size: clamp(14px, 1.5vw, 16px);
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .film-desc {
+      font-size: 12px;
+      color: var(--mid);
+      margin-top: 4px;
+    }
+
+    /* Strzałki karuzeli */
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: clamp(32px, 4vh, 56px);
+    }
+
+    .carousel-btn {
+      width: 44px;
+      height: 44px;
+      border: 1.5px solid var(--ink);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .carousel-btn:hover { background: var(--ink); }
+    .carousel-btn:hover svg path { stroke: #fff; }
+    .carousel-btn svg { width: 18px; height: 18px; }
+    .carousel-btn svg path { stroke: var(--ink); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.2s; }
+
+    .see-more-btn {
+      font-family: var(--font-disp);
+      font-size: clamp(13px, 1.4vw, 14px);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 12px 28px;
+      border: 1.5px solid var(--ink);
+      transition: background 0.2s, color 0.2s;
+    }
+    .see-more-btn:hover { background: var(--ink); color: #fff; }
+
+    /* ── BIO ─────────────────────────────────────────── */
+    #bio {
+      border-top: 1px solid #e8e8e8;
+      padding: var(--pad-y) var(--pad-x);
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(32px, 5vw, 80px);
+    }
+
+    #bio .section-label { margin-bottom: 20px; }
+
+    .bio-text {
+      font-size: clamp(14px, 1.5vw, 16px);
+      color: var(--mid);
+      line-height: 1.75;
+    }
+
+    .bio-skills {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-self: start;
+      margin-top: 72px; /* wyrównanie z tekstem */
+    }
+
+    .skill-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .skill-name { font-family: var(--font-disp); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    .skill-val  { font-size: 12px; color: var(--mid); }
+
+    /* ── CONTACT ─────────────────────────────────────── */
+    #contact {
+      border-top: 1px solid #e8e8e8;
+      padding: var(--pad-y) var(--pad-x);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 40px;
+    }
+
+    .contact-headline {
+      font-family: var(--font-disp);
+      font-size: clamp(28px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      max-width: 600px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: right;
+    }
+
+    .contact-links a {
+      font-family: var(--font-disp);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .contact-links a:hover { color: var(--mid); }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid #e8e8e8;
+      padding: 24px var(--pad-x);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: var(--font-disp);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      .film-card {
+        flex: 0 0 calc((100% - clamp(16px, 2vw, 28px)) / 1.15);
+      }
+
+      #bio {
+        grid-template-columns: 1fr;
+      }
+
+      .bio-skills { margin-top: 0; }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-links { text-align: left; }
+
+      nav { gap: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-track { transition: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="logo-block">
+      <a href="#" class="logo">ereska</a>
+      <span class="logo-sub">video editing &nbsp;·&nbsp; videography &nbsp;·&nbsp; motion design</span>
+    </div>
+    <nav>
+      <a href="#work">work</a>
+      <a href="#bio">bio</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </header>
+
+  <!-- ── SHOWREEL ── -->
+  <section id="showreel">
+    <div class="showreel-embed">
+      <!--
+        Wklej tutaj iframe z Vimeo, np.:
+        <iframe src="https://player.vimeo.com/video/TWÓJ_ID?autoplay=1&loop=1&muted=1&background=1" allow="autoplay; fullscreen"></iframe>
+      -->
+      <div class="showreel-placeholder">showreel — wklej iframe Vimeo</div>
+    </div>
+  </section>
+
+  <!-- ── WORK ── -->
+  <section id="work">
+    <h2 class="section-label">my work</h2>
+
+    <div class="carousel-wrapper">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+
+          <!-- KARTA 1 -->
+          <div class="film-card">
+            <div class="film-embed">
+              <!--
+                <iframe src="https://player.vimeo.com/video/ID_FILMU_1" allow="fullscreen"></iframe>
+              -->
+              <div class="film-placeholder">film 1</div>
+            </div>
+            <div class="film-meta">
+              <div class="film-title">Tytuł projektu</div>
+              <div class="film-desc">montaż · 2024</div>
+            </div>
+          </div>
+
+          <!-- KARTA 2 -->
+          <div class="film-card">
+            <div class="film-embed">
+              <div class="film-placeholder">film 2</div>
+            </div>
+            <div class="film-meta">
+              <div class="film-title">Tytuł projektu</div>
+              <div class="film-desc">videography · 2024</div>
+            </div>
+          </div>
+
+          <!-- KARTA 3 -->
+          <div class="film-card">
+            <div class="film-embed">
+              <div class="film-placeholder">film 3</div>
+            </div>
+            <div class="film-meta">
+              <div class="film-title">Tytuł projektu</div>
+              <div class="film-desc">motion design · 2023</div>
+            </div>
+          </div>
+
+          <!-- KARTA 4 (ukryta, pojawi się po kliknięciu) -->
+          <div class="film-card">
+            <div class="film-embed">
+              <div class="film-placeholder">film 4</div>
+            </div>
+            <div class="film-meta">
+              <div class="film-title">Tytuł projektu</div>
+              <div class="film-desc">montaż · 2023</div>
+            </div>
+          </div>
+
+          <!-- KARTA 5 -->
+          <div class="film-card">
+            <div class="film-embed">
+              <div class="film-placeholder">film 5</div>
+            </div>
+            <div class="film-meta">
+              <div class="film-title">Tytuł projektu</div>
+              <div class="film-desc">videography · 2023</div>
+            </div>
+          </div>
+
+        </div><!-- /carousel-track -->
+      </div><!-- /carousel-track-outer -->
+    </div><!-- /carousel-wrapper -->
+
+    <div class="carousel-controls">
+      <button class="carousel-btn" id="prevBtn" aria-label="Poprzedni">
+        <svg viewBox="0 0 18 18"><path d="M11 3L5 9l6 6"/></svg>
+      </button>
+      <button class="see-more-btn" id="seeMoreBtn">see more</button>
+      <button class="carousel-btn" id="nextBtn" aria-label="Następny">
+        <svg viewBox="0 0 18 18"><path d="M7 3l6 6-6 6"/></svg>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ── BIO ── -->
+  <section id="bio">
+    <div>
+      <h2 class="section-label">bio</h2>
+      <p class="bio-text">
+        Jestem montażystą wideo i operatorem kamery z Warszawy, działającym pod marką ereska.
+        Specjalizuję się w post-produkcji dla marek, twórców i firm — od koncepcji po gotowy materiał.
+        Pracuję w Premiere Pro, After Effects i DaVinci Resolve.
+      </p>
+    </div>
+    <div class="bio-skills">
+      <div class="skill-row">
+        <span class="skill-name">Video editing</span>
+        <span class="skill-val">Premiere Pro / DaVinci</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Motion design</span>
+        <span class="skill-val">After Effects</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Camera</span>
+        <span class="skill-val">Sony / run & gun</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Color grading</span>
+        <span class="skill-val">S-Log3 / LUT pipeline</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div class="contact-headline">
+        Masz projekt?<br>Porozmawiajmy.
+      </div>
+      <div class="contact-links">
+        <a href="mailto:kontakt@ereska.pl">kontakt@ereska.pl</a>
+        <a href="https://vimeo.com/ereska" target="_blank" rel="noopener">vimeo</a>
+        <a href="https://instagram.com/ereska" target="_blank" rel="noopener">instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span class="footer-name">ereska</span>
+    <span class="footer-copy">© 2025</span>
+  </footer>
+
+  <!-- ── KARUZELA JS ── -->
+  <script>
+    const track    = document.getElementById('carouselTrack');
+    const prevBtn  = document.getElementById('prevBtn');
+    const nextBtn  = document.getElementById('nextBtn');
+    const seeMore  = document.getElementById('seeMoreBtn');
+
+    let current = 0;
+
+    function visibleCount() {
+      return window.innerWidth <= 768 ? 1 : 3;
+    }
+
+    function cardWidth() {
+      const cards = track.querySelectorAll('.film-card');
+      if (!cards.length) return 0;
+      const style = window.getComputedStyle(track);
+      const gap   = parseFloat(style.gap) || 0;
+      return cards[0].offsetWidth + gap;
+    }
+
+    function maxIndex() {
+      const total = track.querySelectorAll('.film-card').length;
+      return Math.max(0, total - visibleCount());
+    }
+
+    function goTo(index) {
+      const max = maxIndex();
+      current = Math.max(0, Math.min(index, max));
+      track.style.transform = `translateX(-${current * cardWidth()}px)`;
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+
+    // "see more" — przewija o visibleCount do przodu, a jak jest na końcu, wraca na start
+    seeMore.addEventListener('click', () => {
+      if (current >= maxIndex()) {
+        goTo(0);
+      } else {
+        goTo(current + visibleCount());
+      }
+    });
+
+    window.addEventListener('resize', () => goTo(current));
+  </script>
+
+</body>
+</html>
