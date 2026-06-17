@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ereska.studio — video editor · videographer · motion designer</title>
+<meta name="description" content="ereska.studio — video editing, videography and motion design. Brand films, music videos, social content.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#10213f;
+    --navy-bright:#1f4fb0;
+    --ink:#10141c;
+    --muted:#5a6373;
+    --hint:#9aa2b1;
+    --line:rgba(16,33,63,.12);
+    --bg:#ffffff;
+    --surface:#f4f6fa;
+    --radius:14px;
+    --maxw:1180px;
+    --font-body:'Inter',system-ui,-apple-system,sans-serif;
+    --font-display:'Space Grotesk','Inter',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.86);
+    backdrop-filter:saturate(160%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mark{
+    width:34px;height:34px;border-radius:9px;background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:var(--font-display);font-weight:700;font-size:18px;
+  }
+  .brand-name{display:flex;flex-direction:column;line-height:1.05}
+  .brand-name b{font-family:var(--font-display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+  .brand-name span{font-size:11px;color:var(--hint);letter-spacing:.06em}
+  nav ul{display:flex;gap:30px;list-style:none}
+  nav a{font-size:14px;color:var(--muted);font-weight:500;position:relative;padding:4px 0;transition:color .2s}
+  nav a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--navy-bright);transition:width .25s}
+  nav a:hover{color:var(--ink)}
+  nav a:hover::after{width:100%}
+
+  /* ---------- hero / showreel ---------- */
+  .hero{position:relative;height:78vh;min-height:460px;max-height:760px;background:#0b1424;overflow:hidden}
+  .hero video,.hero .reel-fallback{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  }
+  .reel-fallback{
+    background:
+      radial-gradient(120% 120% at 80% 10%, #1f4fb0 0%, transparent 45%),
+      radial-gradient(120% 120% at 10% 90%, #10213f 0%, transparent 55%),
+      #0b1424;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .reel-fallback span{color:rgba(255,255,255,.32);font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+  .hero-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,20,36,.15) 0%,rgba(11,20,36,.05) 40%,rgba(11,20,36,.75) 100%)}
+  .hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:46px}
+  .hero h1{
+    font-family:var(--font-display);color:#fff;font-weight:700;
+    font-size:clamp(30px,6vw,68px);line-height:1.02;letter-spacing:-.02em;max-width:14ch;
+  }
+  .hero .roles{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px 22px;color:rgba(255,255,255,.82);font-size:clamp(14px,2vw,18px);font-weight:500}
+  .hero .roles span{display:flex;align-items:center;gap:10px}
+  .hero .roles span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--navy-bright)}
+  .playbtn{
+    position:absolute;top:24px;right:24px;z-index:3;
+    display:flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);
+    color:#fff;padding:9px 16px 9px 13px;border-radius:40px;font-size:13px;font-weight:500;cursor:pointer;
+    backdrop-filter:blur(6px);transition:background .2s;
+  }
+  .playbtn:hover{background:rgba(255,255,255,.22)}
+  .playbtn svg{width:14px;height:14px;fill:#fff}
+
+  /* ---------- section scaffold ---------- */
+  section{padding:84px 0}
+  .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+  .eyebrow h2{font-family:var(--font-display);font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-.01em}
+  .eyebrow .rule{flex:1;height:1px;background:var(--line)}
+  .eyebrow .count{font-size:13px;color:var(--hint);font-variant-numeric:tabular-nums}
+
+  /* ---------- work filter ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+  .filters button{
+    font-family:var(--font-body);font-size:13.5px;font-weight:500;cursor:pointer;
+    color:var(--muted);background:transparent;border:1px solid var(--line);
+    padding:8px 18px;border-radius:30px;transition:all .2s;
+  }
+  .filters button:hover{color:var(--ink);border-color:var(--navy)}
+  .filters button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  /* ---------- work grid (column masonry — no gaps with mixed heights) ---------- */
+  .grid{
+    column-count:3;
+    column-gap:18px;
+  }
+  .tile{
+    position:relative;border-radius:var(--radius);overflow:hidden;cursor:pointer;
+    background:var(--surface);border:1px solid var(--line);padding:0;
+    display:block;width:100%;margin:0 0 18px;
+    break-inside:avoid;-webkit-column-break-inside:avoid;
+  }
+  .tile.h{aspect-ratio:16/9}
+  .tile.v{aspect-ratio:3/4}
+  .tile.hidden{display:none}
+  .tile img,.tile .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+  .tile .thumb{
+    display:flex;align-items:flex-end;
+    background:linear-gradient(135deg,#1a2f57 0%,#10213f 100%);
+  }
+  .tile:nth-child(6n+2) .thumb{background:linear-gradient(135deg,#26406f 0%,#142647 100%)}
+  .tile:nth-child(6n+3) .thumb{background:linear-gradient(135deg,#1f4fb0 0%,#10213f 100%)}
+  .tile:nth-child(6n+4) .thumb{background:linear-gradient(135deg,#21385f 0%,#0d1a33 100%)}
+  .tile:nth-child(6n+5) .thumb{background:linear-gradient(135deg,#2c4a86 0%,#16294a 100%)}
+  .tile:nth-child(6n+6) .thumb{background:linear-gradient(135deg,#172a4d 0%,#0b1730 100%)}
+  .tile:hover img,.tile:hover .thumb{transform:scale(1.05)}
+  .tile-overlay{
+    position:absolute;inset:0;z-index:2;padding:16px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    background:linear-gradient(180deg,rgba(11,20,36,.05) 0%,rgba(11,20,36,.7) 100%);
+    opacity:0;transition:opacity .3s;
+  }
+  .tile:hover .tile-overlay,.tile:focus-visible .tile-overlay{opacity:1}
+  .tile .cat{align-self:flex-start;background:rgba(255,255,255,.16);backdrop-filter:blur(4px);color:#fff;font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:30px}
+  .tile .meta b{display:block;color:#fff;font-family:var(--font-display);font-weight:600;font-size:16px}
+  .tile .meta small{color:rgba(255,255,255,.7);font-size:12px}
+  .tile .ar{position:absolute;top:14px;right:14px;z-index:1;color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.05em}
+  .play-dot{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);opacity:0;transition:.3s;z-index:3}
+  .play-dot svg{width:16px;height:16px;fill:var(--navy);margin-left:2px}
+  .tile:hover .play-dot{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .seemore-wrap{display:flex;justify-content:center;margin-top:36px}
+  .seemore{
+    font-family:var(--font-display);font-size:14px;font-weight:600;cursor:pointer;
+    color:var(--navy);background:transparent;border:1px solid var(--navy);
+    padding:13px 30px;border-radius:40px;display:flex;align-items:center;gap:10px;transition:all .2s;
+  }
+  .seemore:hover{background:var(--navy);color:#fff}
+  .seemore svg{width:14px;height:14px;fill:currentColor;transition:transform .3s}
+  .seemore.open svg{transform:rotate(180deg)}
+
+  /* ---------- bio ---------- */
+  #bio{
+    background:linear-gradient(180deg,#ffffff 0%,#f7f9fc 45%,#ffffff 100%);
+    border-top:1px solid var(--line);
+  }
+  .bio-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}
+  .portrait{border-radius:var(--radius);overflow:hidden;background:#dfe4ee;aspect-ratio:4/5;position:relative;border:1px solid var(--line)}
+  .portrait .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--hint);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  .bio-blocks{display:flex;flex-direction:column;gap:30px}
+  .bblock{border-left:2px solid var(--navy-bright);padding-left:20px}
+  .bblock .lbl{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--navy-bright);letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px}
+  .bblock p{color:var(--muted);font-size:15.5px}
+  .bblock.intro p{color:var(--ink);font-size:18px;line-height:1.55}
+  .gear{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .gear li{font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);padding:6px 13px;border-radius:8px}
+  .facts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;margin-top:2px}
+  .facts li{font-size:14px;color:var(--muted);display:flex;gap:9px}
+  .facts li b{color:var(--ink);font-weight:500}
+
+  /* ---------- worked with marquee ---------- */
+  #clients{padding:64px 0;border-top:1px solid var(--line)}
+  .marquee{position:relative;overflow:hidden;margin-top:42px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .marquee-track{display:flex;width:max-content;gap:110px;align-items:center;animation:scroll 50s linear infinite}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marquee-track span{font-family:var(--font-display);font-weight:600;font-size:clamp(20px,3vw,30px);color:var(--hint);white-space:nowrap;transition:color .2s}
+  .marquee-track span:hover{color:var(--navy)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- contact ---------- */
+  #contact{background:var(--navy);color:#fff;text-align:center}
+  #contact .eyebrow{justify-content:center}
+  #contact h2{color:#fff}
+  #contact .lead{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,4.5vw,46px);letter-spacing:-.02em;max-width:16ch;margin:0 auto 8px}
+  #contact .mail{display:inline-block;margin-top:20px;font-size:clamp(18px,2.6vw,26px);color:#fff;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:3px;transition:border-color .2s}
+  #contact .mail:hover{border-color:#fff}
+  .socials{display:flex;gap:14px;justify-content:center;margin-top:34px}
+  .socials a{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+  .socials a:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.5)}
+  .socials svg{width:19px;height:19px;fill:#fff}
+  footer{padding:26px 0;text-align:center;font-size:12px;color:var(--hint)}
+
+  /* ---------- lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,14,26,.92);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px}
+  .lb.open{display:flex}
+  .lb-inner{width:100%;max-width:980px;max-height:92vh;overflow:auto}
+  .lb-media{position:relative;width:100%;background:#000;border-radius:12px;overflow:hidden}
+  .lb-media.h{aspect-ratio:16/9}
+  .lb-media.v{aspect-ratio:9/16;max-width:420px;margin:0 auto}
+  .lb-media iframe,.lb-media .ph2{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .lb-media .ph2{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a2f57,#10213f);color:rgba(255,255,255,.4);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  .lb-info{padding:18px 4px 4px;color:#fff}
+  .lb-info .cat{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy-bright);font-weight:600}
+  .lb-info h3{font-family:var(--font-display);font-weight:600;font-size:23px;margin:6px 0 8px}
+  .lb-info p{color:rgba(255,255,255,.72);font-size:15px;max-width:62ch}
+  .lb-close{position:fixed;top:18px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+  .lb-close:hover{background:rgba(255,255,255,.22)}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:860px){
+    .bio-layout{grid-template-columns:1fr;gap:30px}
+    .portrait{max-width:300px}
+    nav ul{gap:20px}
+    .grid{column-count:2;column-gap:16px}
+    .tile{margin-bottom:16px}
+  }
+  @media(max-width:680px){
+    section{padding:60px 0}
+    .grid{column-count:2;column-gap:12px}
+    .tile{margin-bottom:12px}
+    .brand-name span{display:none}
+    .hero{height:72vh}
+    .facts{grid-template-columns:1fr}
+  }
+  @media(max-width:440px){
+    .grid{column-count:1}
+    .tile.v{max-width:320px;margin-left:auto;margin-right:auto}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto}
+    .marquee-track{animation:none}
+    .tile:hover img,.tile:hover .thumb{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="ereska.studio home">
+      <span class="mark">e</span>
+      <span class="brand-name"><b>ereska</b><span>.STUDIO</span></span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#work">work</a></li>
+        <li><a href="#bio">bio</a></li>
+        <li><a href="#contact">contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== HERO / SHOWREEL ===== -->
+  <section class="hero" style="padding:0" aria-label="Showreel">
+    <!-- Replace the fallback div below with:
+         <video src="showreel.mp4" autoplay muted loop playsinline poster="reel-poster.jpg"></video> -->
+    <div class="reel-fallback"><span>showreel — drop showreel.mp4 here</span></div>
+    <div class="hero-veil"></div>
+    <button class="playbtn" id="reelBtn" aria-label="Play full showreel">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> watch showreel
+    </button>
+    <div class="wrap hero-inner">
+      <h1>moving pictures, made with intent.</h1>
+      <div class="roles">
+        <span>video editor</span>
+        <span>videographer</span>
+        <span>motion designer</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORK ===== -->
+  <section id="work">
+    <div class="wrap">
+      <div class="eyebrow">
+        <h2>work</h2>
+        <span class="rule"></span>
+        <span class="count">selected projects</span>
+      </div>
+      <div class="filters" id="filters">
+        <button class="active" data-cat="all">All</button>
+        <button data-cat="films">Films</button>
+        <button data-cat="social">Social Media</button>
+        <button data-cat="animation">Animation</button>
+      </div>
+      <div class="grid" id="workGrid">
+        <!-- tiles injected by JS from the projects array -->
+      </div>
+      <div class="seemore-wrap">
+        <button class="seemore" id="seeMore">
+          see more <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BIO ===== -->
+  <section id="bio">
+    <div class="wrap">
+      <div class="eyebrow">
+        <h2>bio</h2>
+        <span class="rule"></span>
+      </div>
+      <div class="bio-layout">
+        <div class="portrait"><div class="ph">portrait.jpg</div></div>
+        <div class="bio-blocks">
+          <div class="bblock intro">
+            <div class="lbl">hi, i'm —</div>
+            <p>Hi, I'm ereska — a video editor, videographer and motion designer. I make brand films, music videos and social content that feel considered from the first frame to the last cut. Tell me the story you want to tell and I'll shape the pace, look and sound around it.</p>
+          </div>
+          <div class="bblock">
+            <div class="lbl">how i work — gear &amp; tools</div>
+            <p style="margin-bottom:12px">I shoot, edit, grade and animate in-house, so a project stays coherent from set to delivery.</p>
+            <ul class="gear">
+              <li>Adobe Premiere Pro</li>
+              <li>After Effects</li>
+              <li>Photoshop</li>
+              <li>DaVinci Resolve</li>
+              <li>Sony ZV-E10</li>
+            </ul>
+          </div>
+          <div class="bblock">
+            <div class="lbl">good to know</div>
+            <ul class="facts">
+              <li><b>Delivery:</b> 4K, multi-format (16:9 · 9:16 · 1:1)</li>
+              <li><b>Turnaround:</b> typically 1–2 weeks per edit</li>
+              <li><b>Includes:</b> color grade &amp; sound design</li>
+              <li><b>Languages:</b> Polish · English</li>
+              <li><b>Based in:</b> Warsaw — available remote</li>
+              <li><b>Rates:</b> on request, per project</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== I WORKED WITH ===== -->
+  <section id="clients">
+    <div class="wrap">
+      <div class="eyebrow">
+        <h2>i worked with</h2>
+        <span class="rule"></span>
+      </div>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track" id="clientTrack">
+        <!-- duplicated set injected by JS for a seamless loop -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="eyebrow"><h2>contact</h2></div>
+      <p class="lead">Let's make something worth watching.</p>
+      <a class="mail" href="mailto:hello@ereska.studio">hello@ereska.studio</a>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.97.24 2.43.4.6.24 1.04.52 1.5.98.46.46.74.9.98 1.5.16.46.35 1.26.4 2.43.06 1.3.07 1.7.07 4.92s0 3.6-.07 4.9c-.05 1.17-.24 1.97-.4 2.43-.24.6-.52 1.04-.98 1.5-.46.46-.9.74-1.5.98-.46.16-1.26.35-2.43.4-1.3.06-1.7.07-4.9.07s-3.6 0-4.92-.07c-1.17-.05-1.97-.24-2.43-.4-.6-.24-1.04-.52-1.5-.98-.46-.46-.74-.9-.98-1.5-.16-.46-.35-1.26-.4-2.43C2.21 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.17.24-1.97.4-2.43.24-.6.52-1.04.98-1.5.46-.46.9-.74 1.5-.98.46-.16 1.26-.35 2.43-.4C8.4 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52.01-4.76.07-.9.04-1.38.19-1.7.32-.43.16-.74.36-1.06.68-.32.32-.52.63-.68 1.06-.13.32-.28.8-.32 1.7C3.21 8.5 3.2 8.85 3.2 12s.01 3.5.07 4.74c.04.9.19 1.38.32 1.7.16.43.36.74.68 1.06.32.32.63.52 1.06.68.32.13.8.28 1.7.32 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c.9-.04 1.38-.19 1.7-.32.43-.16.74-.36 1.06-.68.32-.32.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.24.07-1.6.07-4.74s-.01-3.5-.07-4.74c-.04-.9-.19-1.38-.32-1.7a2.86 2.86 0 0 0-.68-1.06 2.86 2.86 0 0 0-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.52 4.01 15.15 4 12 4zm0 3.06A4.94 4.94 0 1 1 7.06 12 4.94 4.94 0 0 1 12 7.06zm0 8.14A3.2 3.2 0 1 0 8.8 12 3.2 3.2 0 0 0 12 15.2zm6.3-8.34a1.15 1.15 0 1 1-1.15-1.15 1.15 1.15 0 0 1 1.15 1.15z"/></svg></a>
+        <a href="#" aria-label="Vimeo"><svg viewBox="0 0 24 24"><path d="M22 7.42c-.1 2.16-1.6 5.12-4.52 8.88C14.46 20.22 12 22 9.9 22c-1.3 0-2.4-1.2-3.3-3.6l-1.8-6.6c-.67-2.4-1.38-3.6-2.15-3.6-.17 0-.74.34-1.72 1.02L0 7.92c1.05-.92 2.08-1.85 3.1-2.77 1.4-1.2 2.45-1.84 3.15-1.9 1.65-.16 2.67.97 3.05 3.4.4 2.62.69 4.25.85 4.9.47 2.13.98 3.2 1.54 3.2.43 0 1.08-.68 1.94-2.05.86-1.36 1.32-2.4 1.38-3.12.12-1.16-.34-1.74-1.38-1.74-.49 0-1 .11-1.52.33 1-3.3 2.92-4.9 5.76-4.81 2.1.06 3.1 1.42 2.98 4.07z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 7.5a3 3 0 0 0-2.1-2.12C19.05 4.9 12 4.9 12 4.9s-7.05 0-8.9.48A3 3 0 0 0 1 7.5 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.12c1.85.48 8.9.48 8.9.48s7.05 0 8.9-.48A3 3 0 0 0 23 16.5 31 31 0 0 0 23.5 12 31 31 0 0 0 23 7.5zM9.75 15.05v-6.1L15.5 12z"/></svg></a>
+        <a href="mailto:hello@ereska.studio" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 7.1 8-5.1H4zM4 8.2V18h16V8.2l-8 5.1z"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap">© <span id="yr"></span> ereska.studio — all rights reserved</footer>
+</main>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Project viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+  <div class="lb-inner">
+    <div class="lb-media h" id="lbMedia"></div>
+    <div class="lb-info">
+      <div class="cat" id="lbCat"></div>
+      <h3 id="lbTitle"></h3>
+      <p id="lbDesc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ---- EDIT YOUR PROJECTS HERE ----
+     cat:    'films' | 'social' | 'animation'   (drives the filter)
+     orient: 'h' (16:9, landscape) or 'v' (9:16, vertical)
+     thumb:  path to a thumbnail image, e.g. 'thumbs/atlas.jpg'
+             (omit or leave off to show a colored placeholder instead)
+     embed:  a YouTube/Vimeo embed URL, or leave '' to show a placeholder
+     label:  short type shown on the card (e.g. 'brand film')
+     The first 9 show by default; "see more" reveals the rest (15 total). */
+  const projects = [
+    {title:'Atlas — brand film',   cat:'films',     label:'brand film',   orient:'h', desc:'A 90-second brand film: concept, shoot, edit, grade and sound. Delivered as a hero 16:9 cut plus trimmed social versions.', embed:''},
+    {title:'Night Drive',          cat:'social',    label:'reel',         orient:'v', thumbs:'thumbs/bmwexperience', desc:'Vertical-first music video built for Reels and TikTok. Beat-matched edit with custom motion titles.', embed:''},
+    {title:'Explainer animation',  cat:'animation', label:'explainer',    orient:'h', desc:'Animated explainer breaking down a product in under a minute — illustration, motion and VO sync.', embed:''},
+    {title:'Kinetic type loop',    cat:'animation', label:'motion study', orient:'v', desc:'After Effects kinetic typography loop — a self-initiated motion study exploring rhythm and pacing.', embed:''},
+    {title:'Festival aftermovie',  cat:'films',     label:'event film',   orient:'h', desc:'Event aftermovie capturing the energy of the weekend — multicam edit, music-led pacing.', embed:''},
+    {title:'Skincare — 15s ad',    cat:'social',    label:'ad reel',      orient:'v', desc:'Short-form vertical ad cut for paid social, with snappy pacing and animated captions.', embed:''},
+    {title:'Cinematic travel',     cat:'films',     label:'travel film',  orient:'h', desc:'Cinematic travel film — handheld and gimbal coverage cut to an atmospheric score.', embed:''},
+    {title:'Café story',           cat:'social',    label:'short doc',    orient:'v', desc:'Vertical short documentary profiling a local café, shaped for Instagram and TikTok.', embed:''},
+    {title:'Logo sting',           cat:'animation', label:'logo reveal',  orient:'v', desc:'A crisp animated logo reveal with sound design — drop-in opener for video content.', embed:''},
+
+    {title:'Product launch',       cat:'films',     label:'commercial',   orient:'h', desc:'Punchy launch spot with product-focused macro shots, color graded for a clean, premium feel.', embed:''},
+    {title:'Fashion lookbook',     cat:'social',    label:'lookbook',     orient:'v', desc:'Vertical fashion lookbook cut for stories — fast transitions locked to the beat.', embed:''},
+    {title:'Title sequence',       cat:'animation', label:'title design', orient:'h', desc:'Animated title sequence — typography, texture and timing built in After Effects.', embed:''},
+    {title:'Recipe short',         cat:'social',    label:'food reel',    orient:'v', desc:'Top-down vertical recipe short with kinetic step captions, made for social feeds.', embed:''},
+    {title:'Corporate recap',      cat:'films',     label:'corporate',    orient:'h', desc:'Conference recap film with interview inserts and b-roll, color graded for a polished tone.', embed:''},
+    {title:'Music video — Echoes', cat:'films',     label:'music video',  orient:'h', desc:'Performance-led music video — multicam shoot, narrative edit and a stylised grade.', embed:''},
+  ];
+
+  const INITIAL = 9;            /* shown before "see more" */
+  const catLabels = {films:'films', social:'social media', animation:'animation'};
+
+  const clients = ['NORDA','Pixela','SONORA','Atlas Films','Studio Mira','Verde'];
+
+  const grid = document.getElementById('workGrid');
+  const seeMore = document.getElementById('seeMore');
+  let activeCat = 'all';
+  let expanded = false;
+
+  function render(){
+    grid.innerHTML = '';
+    const list = projects.filter(p => activeCat==='all' || p.cat===activeCat);
+    const limit = expanded ? list.length : INITIAL;
+    list.forEach((p,idx)=>{
+      const t = document.createElement('button');
+      t.className = 'tile '+(p.orient==='v'?'v':'h')+(idx>=limit?' hidden':'');
+      t.setAttribute('aria-label','Open '+p.title);
+      const ar = p.orient==='v' ? '9:16' : '16:9';
+      const thumb = p.thumb
+        ? '<img class="thumb" src="'+p.thumb+'" alt="'+p.title+'" loading="lazy">'
+        : '<div class="thumb"></div>';
+      t.innerHTML =
+        thumb+
+        '<span class="ar">'+ar+'</span>'+
+        '<span class="play-dot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>'+
+        '<div class="tile-overlay"><span class="cat">'+catLabels[p.cat]+'</span>'+
+          '<div class="meta"><b>'+p.title+'</b><small>'+p.label+' · '+ar+'</small></div></div>';
+      t.addEventListener('click',()=>openLightbox(p));
+      grid.appendChild(t);
+    });
+    /* hide the see-more button when nothing more to reveal */
+    seeMore.parentElement.style.display = (list.length > INITIAL) ? 'flex' : 'none';
+  }
+
+  /* filter buttons */
+  document.getElementById('filters').addEventListener('click',e=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    document.querySelectorAll('#filters button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    expanded = false;
+    seeMore.classList.remove('open');
+    seeMore.firstChild.textContent = 'see more ';
+    render();
+  });
+
+  /* see more / less toggle */
+  seeMore.addEventListener('click',()=>{
+    expanded = !expanded;
+    seeMore.classList.toggle('open',expanded);
+    seeMore.firstChild.textContent = expanded ? 'see less ' : 'see more ';
+    render();
+  });
+
+  render();
+
+  /* build seamless marquee (list rendered twice) */
+  const track = document.getElementById('clientTrack');
+  const set = clients.map(c=>'<span>'+c+'</span>').join('');
+  track.innerHTML = set + set;
+
+  /* lightbox */
+  const lb=document.getElementById('lb'), lbMedia=document.getElementById('lbMedia'),
+        lbCat=document.getElementById('lbCat'), lbTitle=document.getElementById('lbTitle'),
+        lbDesc=document.getElementById('lbDesc'), lbClose=document.getElementById('lbClose');
+
+  function openLightbox(p){
+    lbMedia.className='lb-media '+(p.orient==='v'?'v':'h');
+    lbMedia.innerHTML = p.embed
+      ? '<iframe src="'+p.embed+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>'
+      : '<div class="ph2">embed your video here</div>';
+    lbCat.textContent=catLabels[p.cat];
+    lbTitle.textContent=p.title;
+    lbDesc.textContent=p.desc;
+    lb.classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeLightbox(){
+    lb.classList.remove('open');
+    lbMedia.innerHTML='';
+    document.body.style.overflow='';
+  }
+  lbClose.addEventListener('click',closeLightbox);
+  lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+  /* showreel button — scrolls to top reel / hook for full-reel modal */
+  document.getElementById('reelBtn').addEventListener('click',()=>{
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+</script>
+</body>
+</html>
