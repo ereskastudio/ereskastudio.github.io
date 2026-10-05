@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ereska.studio — montaż wideo · zdjęcia · motion design</title>
+<meta name="description" content="ereska.studio — montaż wideo, realizacja i motion design. Filmy wizerunkowe, teledyski, treści na social media.">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#10213f;
+    --navy-bright:#1f4fb0;
+    --ink:#10141c;
+    --muted:#5a6373;
+    --hint:#9aa2b1;
+    --line:rgba(16,33,63,.12);
+    --bg:#ffffff;
+    --surface:#f4f6fa;
+    --radius:14px;
+    --maxw:1180px;
+    --gutter:24px;
+    --header-h:68px;
+    --font-body:'Inter',system-ui,-apple-system,sans-serif;
+    --font-display:'Space Grotesk','Inter',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:var(--header-h);-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  :focus-visible{outline:2px solid var(--navy-bright);outline-offset:3px}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.86);
+    -webkit-backdrop-filter:saturate(160%) blur(12px);
+    backdrop-filter:saturate(160%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:var(--header-h);gap:16px}
+  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+  .mark{
+    width:34px;height:34px;border-radius:9px;background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:var(--font-display);font-weight:700;font-size:18px;flex-shrink:0;
+  }
+  .brand-name{display:flex;flex-direction:column;line-height:1.05}
+  .brand-name b{font-family:var(--font-display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+  .brand-name span{font-size:11px;color:var(--hint);letter-spacing:.06em}
+  .hdr-right{display:flex;align-items:center;gap:28px}
+  nav ul{display:flex;gap:30px;list-style:none}
+  nav a{font-size:14px;color:var(--muted);font-weight:500;position:relative;padding:4px 0;transition:color .2s;white-space:nowrap}
+  nav a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--navy-bright);transition:width .25s}
+  nav a:hover{color:var(--ink)}
+  nav a:hover::after{width:100%}
+
+  /* ---------- language switch (iOS-style) ---------- */
+  .lang-switch{
+    --sw-w:62px;--sw-h:32px;--k:26px;
+    position:relative;flex-shrink:0;
+    width:var(--sw-w);height:var(--sw-h);padding:0;border:0;border-radius:999px;cursor:pointer;
+    background:var(--navy);
+    box-shadow:inset 0 1px 3px rgba(0,0,0,.28);
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  }
+  .lang-switch .opt{
+    position:absolute;top:0;bottom:0;width:50%;
+    display:flex;align-items:center;justify-content:center;
+    font:600 10.5px/1 var(--font-display);letter-spacing:.06em;color:rgba(255,255,255,.55);
+    pointer-events:none;user-select:none;
+  }
+  .lang-switch .opt.pl{left:0}
+  .lang-switch .opt.en{right:0}
+  .lang-switch .knob{
+    position:absolute;top:3px;left:3px;
+    width:var(--k);height:var(--k);border-radius:999px;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font:700 10.5px/1 var(--font-display);letter-spacing:.04em;color:var(--navy);
+    box-shadow:0 3px 8px rgba(0,0,0,.22),0 1px 1px rgba(0,0,0,.12);
+    transition:transform .38s cubic-bezier(.34,1.45,.64,1),width .2s ease;
+    pointer-events:none;user-select:none;
+  }
+  .lang-switch[aria-checked="true"] .knob{transform:translateX(calc(var(--sw-w) - var(--k) - 6px))}
+  /* iOS "stretch" while pressing */
+  .lang-switch:active .knob{width:calc(var(--k) + 6px)}
+  .lang-switch[aria-checked="true"]:active .knob{transform:translateX(calc(var(--sw-w) - var(--k) - 12px))}
+
+  /* ---------- side photo rails ---------- */
+  .rail{
+    position:fixed;top:var(--header-h);bottom:0;z-index:40;
+    width:calc((100vw - var(--maxw)) / 2 + var(--gutter));
+    max-width:560px;
+    pointer-events:none;opacity:0;
+    transition:opacity 1s ease;
+    display:none;
+  }
+  .rail-l{left:0}
+  .rail-r{right:0}
+  .rail-inner{
+    position:absolute;inset:0;overflow:hidden;
+    -webkit-mask-image:radial-gradient(ellipse 100% 58% at 0% 50%,#000 0%,#000 30%,rgba(0,0,0,.55) 62%,transparent 100%);
+    mask-image:radial-gradient(ellipse 100% 58% at 0% 50%,#000 0%,#000 30%,rgba(0,0,0,.55) 62%,transparent 100%);
+  }
+  .rail-r .rail-inner{
+    -webkit-mask-image:radial-gradient(ellipse 100% 58% at 100% 50%,#000 0%,#000 30%,rgba(0,0,0,.55) 62%,transparent 100%);
+    mask-image:radial-gradient(ellipse 100% 58% at 100% 50%,#000 0%,#000 30%,rgba(0,0,0,.55) 62%,transparent 100%);
+  }
+  .rail-slide{
+    position:absolute;inset:-2%;
+    background-size:cover;background-position:center;background-repeat:no-repeat;
+    opacity:0;transform:scale(1.08);
+    transition:opacity 1.8s ease,transform 12s linear;
+    filter:saturate(.92);
+  }
+  .rail-slide.on{opacity:1;transform:scale(1)}
+  /* soft tint so photos sit in the palette */
+  .rail-inner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,33,63,.06),rgba(31,79,176,.08))}
+  body.rails-on .rail{opacity:1}
+  @media(min-width:1440px){ .rail{display:block} }
+
+  /* ---------- hero / showreel ---------- */
+  .hero{position:relative;height:78vh;height:78svh;min-height:460px;max-height:760px;background:#0b1424;overflow:hidden}
+  .hero video,.hero .reel-fallback{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  }
+  .reel-fallback{
+    background:
+      radial-gradient(120% 120% at 80% 10%, #1f4fb0 0%, transparent 45%),
+      radial-gradient(120% 120% at 10% 90%, #10213f 0%, transparent 55%),
+      #0b1424;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .reel-fallback span{color:rgba(255,255,255,.32);font-size:13px;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:0 24px}
+  .hero-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,20,36,.15) 0%,rgba(11,20,36,.05) 40%,rgba(11,20,36,.75) 100%)}
+  .hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:46px}
+  .hero h1{
+    font-family:var(--font-display);color:#fff;font-weight:700;
+    font-size:clamp(32px,6vw,68px);line-height:1.02;letter-spacing:-.02em;max-width:14ch;
+  }
+  .hero .roles{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px 22px;color:rgba(255,255,255,.82);font-size:clamp(14px,2vw,18px);font-weight:500}
+  .hero .roles span{display:flex;align-items:center;gap:10px}
+  .hero .roles span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--navy-bright)}
+  .playbtn{
+    position:absolute;top:24px;right:24px;z-index:3;
+    display:flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);
+    color:#fff;padding:9px 16px 9px 13px;border-radius:40px;font-size:13px;font-weight:500;cursor:pointer;
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .2s;
+  }
+  .playbtn:hover{background:rgba(255,255,255,.22)}
+  .playbtn svg{width:14px;height:14px;fill:#fff}
+
+  /* ---------- section scaffold ---------- */
+  section{padding:84px 0}
+  .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+  .eyebrow h2{font-family:var(--font-display);font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-.01em}
+  .eyebrow .rule{flex:1;height:1px;background:var(--line)}
+  .eyebrow .count{font-size:13px;color:var(--hint);font-variant-numeric:tabular-nums}
+
+  /* ---------- work grid (column masonry — mixed 16:9 / 9:16) ---------- */
+  .grid{column-count:3;column-gap:18px}
+  /* desktop/tablet: JS places tiles left→right into the shortest column (keeps sheet order, balanced columns) */
+  .grid.cols{display:flex;align-items:flex-start;gap:18px;column-count:auto}
+  .grid.cols .col{flex:1 1 0;min-width:0}
+  .tile{
+    position:relative;border-radius:var(--radius);overflow:hidden;cursor:pointer;
+    background:var(--surface);border:1px solid var(--line);padding:0;
+    display:block;width:100%;margin:0 0 18px;
+    break-inside:avoid;-webkit-column-break-inside:avoid;page-break-inside:avoid;
+    -webkit-tap-highlight-color:transparent;
+    transform:translateZ(0); /* fixes Safari overflow+radius clipping on hover zoom */
+  }
+  .tile.h{aspect-ratio:16/9}
+  .tile.v{aspect-ratio:3/4}
+  .tile.hidden{display:none}
+  .tile img,.tile .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+  .tile .thumb{
+    display:flex;align-items:flex-end;
+    background:linear-gradient(135deg,#1a2f57 0%,#10213f 100%);
+  }
+  .tile:nth-child(6n+2) .thumb{background:linear-gradient(135deg,#26406f 0%,#142647 100%)}
+  .tile:nth-child(6n+3) .thumb{background:linear-gradient(135deg,#1f4fb0 0%,#10213f 100%)}
+  .tile:nth-child(6n+4) .thumb{background:linear-gradient(135deg,#21385f 0%,#0d1a33 100%)}
+  .tile:nth-child(6n+5) .thumb{background:linear-gradient(135deg,#2c4a86 0%,#16294a 100%)}
+  .tile:nth-child(6n+6) .thumb{background:linear-gradient(135deg,#172a4d 0%,#0b1730 100%)}
+  .tile:hover img,.tile:hover .thumb{transform:scale(1.05)}
+  .tile-overlay{
+    position:absolute;inset:0;z-index:2;padding:16px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    background:linear-gradient(180deg,rgba(11,20,36,.05) 0%,rgba(11,20,36,.7) 100%);
+    opacity:0;transition:opacity .3s;text-align:left;
+  }
+  .tile:hover .tile-overlay,.tile:focus-visible .tile-overlay{opacity:1}
+  .tile .cat{align-self:flex-start;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);color:#fff;font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:30px}
+  .tile .meta b{display:block;color:#fff;font-family:var(--font-display);font-weight:600;font-size:16px;line-height:1.25}
+  .tile .meta small{color:rgba(255,255,255,.7);font-size:12px}
+  .tile .ar{position:absolute;top:14px;right:14px;z-index:1;color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.05em}
+  .play-dot{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);opacity:0;transition:.3s;z-index:3}
+  .play-dot svg{width:16px;height:16px;fill:var(--navy);margin-left:2px}
+  .tile:hover .play-dot{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  /* touch screens: no hover, so show title & play button permanently */
+  @media(hover:none){
+    .tile-overlay{opacity:1;background:linear-gradient(180deg,rgba(11,20,36,0) 45%,rgba(11,20,36,.78) 100%)}
+    .tile .cat{display:none}
+    .tile-overlay{justify-content:flex-end}
+    .play-dot{opacity:.92;transform:translate(-50%,-50%) scale(.78)}
+    .tile:hover img,.tile:hover .thumb{transform:none}
+  }
+  .seemore-wrap{display:flex;justify-content:center;margin-top:36px}
+  .btn-outline{
+    font-family:var(--font-display);font-size:14px;font-weight:600;cursor:pointer;
+    color:var(--navy);background:transparent;border:1px solid var(--navy);
+    padding:13px 30px;border-radius:40px;display:inline-flex;align-items:center;gap:10px;transition:all .2s;
+  }
+  .btn-outline:hover{background:var(--navy);color:#fff}
+  .btn-outline svg{width:14px;height:14px;fill:currentColor;transition:transform .3s}
+  .seemore.open svg{transform:rotate(180deg)}
+
+  /* ---------- bio ---------- */
+  #bio{
+    background:linear-gradient(180deg,#ffffff 0%,#f7f9fc 45%,#ffffff 100%);
+    border-top:1px solid var(--line);
+  }
+  .bio-layout{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:56px;align-items:start}
+  .portrait{
+    position:relative;
+    border-radius:20px;overflow:hidden;aspect-ratio:4/5;
+    background:linear-gradient(160deg,#e9eef7 0%,#d3dcec 100%);
+    border:1px solid var(--line);
+  }
+  .portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .portrait .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--hint);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  .portrait .badge{
+    position:absolute;left:14px;bottom:14px;z-index:2;
+    display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:30px;
+    background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    font-size:12.5px;font-weight:500;color:var(--ink);
+  }
+  .portrait .badge i{width:7px;height:7px;border-radius:50%;background:var(--navy-bright);box-shadow:0 0 0 3px rgba(31,79,176,.18)}
+  .hello .tag{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--navy-bright);letter-spacing:.06em;text-transform:uppercase}
+  .hello h3{font-family:var(--font-display);font-weight:700;font-size:clamp(32px,4.4vw,50px);line-height:1.04;letter-spacing:-.025em;margin:10px 0 18px}
+  .hello h3 em{font-style:normal;color:var(--navy-bright)}
+  .hello p{font-size:17.5px;line-height:1.62;color:#2b3342;max-width:58ch}
+  .bio-layout{align-items:center}
+  .hello-cta{margin-top:30px}
+  .btn-solid{
+    font-family:var(--font-display);font-size:14px;font-weight:600;
+    color:#fff;background:var(--navy);border:1px solid var(--navy);
+    padding:13px 26px;border-radius:40px;display:inline-flex;align-items:center;gap:10px;transition:background .2s,transform .2s;
+    white-space:nowrap;
+  }
+  .btn-solid:hover{background:var(--navy-bright);border-color:var(--navy-bright)}
+  .btn-solid svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .25s}
+  .btn-solid:hover svg{transform:translateX(3px)}
+
+  /* ---------- worked with marquee ---------- */
+  #clients{padding:64px 0;border-top:1px solid var(--line)}
+  .marquee{
+    --mgap:110px;
+    --logo-h:36px;   /* base logo height — each logo can scale it with h */
+    position:relative;overflow:hidden;margin-top:42px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  }
+  .marquee-track{display:flex;width:max-content;will-change:transform;backface-visibility:hidden}
+  .marquee-group{display:flex;align-items:center;flex-shrink:0;gap:var(--mgap);padding-right:var(--mgap)}
+  /* brand items: plain text, custom typography, or a logo image */
+  .mq-item{display:inline-flex;align-items:center;flex-shrink:0;line-height:1;-webkit-user-drag:none;user-select:none}
+  .mq-text{
+    --mq-size:clamp(20px,3vw,30px);
+    font-family:var(--font-display);font-weight:600;font-size:var(--mq-size);
+    white-space:nowrap;color:var(--brand,var(--ink));transition:color .25s;
+  }
+  .mq-text.mono{color:var(--hint)}
+  .mq-text.mono:hover{color:var(--brand,var(--navy))}
+  .mq-logo img{height:calc(var(--logo-h) * var(--h,1));width:auto;max-width:none;display:block;transition:filter .3s,opacity .3s}
+  .mq-logo.mono img{filter:grayscale(1);opacity:.5}
+  .mq-logo.mono:hover img{filter:none;opacity:1}
+  .marquee.static .marquee-track{width:auto;justify-content:center;flex-wrap:wrap;transform:none!important}
+  .marquee.static .marquee-group{flex-wrap:wrap;justify-content:center;gap:16px 48px;padding:0 24px}
+
+  /* ---------- contact ---------- */
+  #contact{background:var(--navy);color:#fff;text-align:center;padding-bottom:96px}
+  #contact .eyebrow{justify-content:center}
+  #contact h2{color:#fff}
+  #contact .lead{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,4.5vw,46px);line-height:1.1;letter-spacing:-.02em;max-width:16ch;margin:0 auto 14px}
+  #contact .sub{color:rgba(255,255,255,.68);font-size:16px;max-width:46ch;margin:0 auto}
+  #contact .mail{display:inline-block;margin-top:26px;font-size:clamp(19px,2.6vw,26px);color:#fff;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:3px;transition:border-color .2s;word-break:break-word}
+  #contact .mail:hover{border-color:#fff}
+  .contact-points{display:flex;flex-direction:column;align-items:center}
+  #contact .mail{position:relative;z-index:0}
+
+  /* ---------- "tell me about your project" → contact highlight ---------- */
+  #contact .mail::before{
+    content:"";position:absolute;inset:-12px -22px -10px;border-radius:18px;z-index:-1;pointer-events:none;
+    border:1px solid rgba(140,175,255,.75);
+    background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+    box-shadow:0 0 0 4px rgba(111,155,255,.16),0 0 40px rgba(111,155,255,.3);
+    opacity:0;
+  }
+  .contact-points.flash .mail::before{animation:mailGlow 3s ease}
+  .contact-points.flash .ig-card{animation:cardGlow 3s ease .35s}
+  @keyframes mailGlow{
+    0%,100%{opacity:0}
+    20%,70%{opacity:1}
+  }
+  @keyframes cardGlow{
+    0%,100%{border-color:rgba(255,255,255,.16);box-shadow:none}
+    20%,70%{border-color:rgba(140,175,255,.75);box-shadow:0 0 0 4px rgba(111,155,255,.16),0 0 40px rgba(111,155,255,.3)}
+  }
+  .ig-card{
+    display:flex;align-items:center;gap:16px;
+    width:max-content;max-width:100%;margin:44px auto 0;
+    padding:12px 14px 12px 12px;border-radius:22px;text-align:left;
+    background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.16);
+    transition:background .25s,border-color .25s,transform .25s;
+  }
+  .ig-card:hover{background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+  .ig-ring{flex-shrink:0;width:56px;height:56px;border-radius:50%;padding:2.5px;background:conic-gradient(from 210deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5,#feda75)}
+  .ig-ring span{width:100%;height:100%;border-radius:50%;border:3px solid var(--navy);background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:21px;overflow:hidden}
+  .ig-ring img{width:100%;height:100%;object-fit:cover}
+  .ig-txt{min-width:0}
+  .ig-txt b{display:block;font-family:var(--font-display);font-weight:600;font-size:16.5px;line-height:1.25}
+  .ig-txt small{display:block;color:rgba(255,255,255,.62);font-size:13px;margin-top:2px}
+  .ig-arrow{flex-shrink:0;margin-left:10px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;transition:transform .25s,background .25s}
+  .ig-arrow svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .ig-card:hover .ig-arrow{transform:translate(2px,-2px);background:rgba(255,255,255,.18)}
+  footer{padding:26px 0;padding-bottom:max(26px,env(safe-area-inset-bottom));text-align:center;font-size:12px;color:var(--hint)}
+
+  /* ---------- lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(8,14,26,.92);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px}
+  .lb.open{display:flex}
+  .lb-inner{width:100%;max-width:980px;max-height:92vh;overflow:auto;-webkit-overflow-scrolling:touch}
+  .lb-media{position:relative;width:100%;background:#000;border-radius:12px;overflow:hidden}
+  .lb-media.h{aspect-ratio:16/9}
+  .lb-media.v{aspect-ratio:9/16;width:min(100%,420px,calc((88vh - 130px) * 9 / 16));margin:0 auto}
+  .lb-media iframe,.lb-media .ph2{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .lb-media .ph2{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a2f57,#10213f);color:rgba(255,255,255,.4);font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:0 20px}
+  .lb-info{padding:18px 4px 4px;color:#fff}
+  .lb-media.v + .lb-info{max-width:420px;margin:0 auto}
+  .lb-info .cat{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#6f9bff;font-weight:600}
+  .lb-info h3{font-family:var(--font-display);font-weight:600;font-size:23px;margin:6px 0 8px;line-height:1.25}
+  .lb-info p{color:rgba(255,255,255,.72);font-size:15px;max-width:62ch}
+  .lb-close{position:fixed;top:max(18px,env(safe-area-inset-top));right:20px;z-index:2;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+  .lb-close:hover{background:rgba(255,255,255,.22)}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:860px){
+    .bio-layout{grid-template-columns:1fr;gap:34px}
+    .portrait{max-width:380px;width:100%}
+    nav ul{gap:20px}
+    .hdr-right{gap:20px}
+    .grid{column-count:2;column-gap:16px}
+    .grid.cols{gap:16px}
+    .tile{margin-bottom:16px}
+  }
+  @media(max-width:680px){
+    :root{--gutter:16px;--header-h:60px}
+    section{padding:60px 0}
+    /* phones: verticals sit two-up, horizontals go full width */
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;grid-auto-flow:row dense;column-count:auto}
+    .tile{margin:0;border-radius:12px}
+    .tile.h{grid-column:1 / -1}
+    .tile .cat{display:none}
+    .tile-overlay{justify-content:flex-end}
+    .tile-overlay{padding:11px}
+    .tile .meta b{font-size:13.5px}
+    .tile .meta small{font-size:11px}
+    .tile .ar{top:9px;right:10px;font-size:10px}
+    .brand-name span{display:none}
+    .hero{height:70vh;height:70svh;min-height:420px}
+    .hero-inner{padding-bottom:34px}
+    .playbtn{top:16px;right:16px}
+      .hello p{font-size:16.5px}
+    .marquee{--mgap:56px;--logo-h:26px;margin-top:30px}
+    #clients{padding:52px 0}
+    .ig-card{width:100%;max-width:420px}
+    .ig-txt b{font-size:15.5px}
+    .lb{padding:16px}
+    .lb-close{right:14px}
+  }
+  @media(max-width:520px){
+    nav ul{gap:14px}
+    nav a{font-size:13.5px}
+    .hdr-right{gap:14px}
+    .lang-switch{--sw-w:54px;--sw-h:30px;--k:24px}
+    .lang-switch .opt,.lang-switch .knob{font-size:10px}
+      .btn-solid{width:100%;justify-content:center}
+  }
+  @media(max-width:390px){
+    .brand-name{display:none}
+    .ig-txt .ig-extra{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .tile:hover img,.tile:hover .thumb{transform:none}
+    .rail-slide{transition:opacity 1.2s ease;transform:none!important}
+    .lang-switch .knob{transition:transform .15s ease}
+  }
+</style>
+</head>
+<body>
+
+<!-- decorative side photos (desktop ≥1440px only) — set the image paths in sidePhotos in the script -->
+<div class="rail rail-l" aria-hidden="true"><div class="rail-inner" id="railL"></div></div>
+<div class="rail rail-r" aria-hidden="true"><div class="rail-inner" id="railR"></div></div>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="ereska.studio">
+      <span class="mark">e</span>
+      <span class="brand-name"><b>ereska</b><span>.STUDIO</span></span>
+    </a>
+    <div class="hdr-right">
+      <nav>
+        <ul>
+          <li><a href="#work" data-i18n="nav_work">projekty</a></li>
+          <li><a href="#bio" data-i18n="nav_bio">o mnie</a></li>
+          <li><a href="#contact" data-i18n="nav_contact">kontakt</a></li>
+        </ul>
+      </nav>
+      <button class="lang-switch" id="langSwitch" role="switch" aria-checked="false" aria-label="English version" data-i18n-aria="lang_aria">
+        <span class="opt pl">PL</span><span class="opt en">EN</span>
+        <span class="knob" id="langKnob">PL</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== HERO / SHOWREEL ===== -->
+  <section class="hero" id="hero" style="padding:0" aria-label="Showreel">
+    <!-- Replace the fallback div below with:
+         <video src="showreel.mp4" autoplay muted loop playsinline poster="reel-poster.jpg"></video> -->
+    <div class="reel-fallback"><span data-i18n="reel_ph">showreel — wstaw tu showreel.mp4</span></div>
+    <div class="hero-veil"></div>
+    <button class="playbtn" id="reelBtn" aria-label="Showreel">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> <span data-i18n="reel_btn">obejrzyj showreel</span>
+    </button>
+    <div class="wrap hero-inner">
+      <h1 data-i18n="hero_h1">obrazy w ruchu, tworzone z intencją.</h1>
+      <div class="roles">
+        <span data-i18n="role1">montaż wideo</span>
+        <span data-i18n="role2">zdjęcia i realizacja</span>
+        <span data-i18n="role3">motion design</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORK ===== -->
+  <section id="work">
+    <div class="wrap">
+      <div class="eyebrow">
+        <h2 data-i18n="work_h">projekty</h2>
+        <span class="rule"></span>
+        <span class="count" data-i18n="work_count">wybrane realizacje</span>
+      </div>
+      <div class="grid" id="workGrid">
+        <!-- tiles injected by JS from the projects array -->
+      </div>
+      <div class="seemore-wrap">
+        <button class="btn-outline seemore" id="seeMore">
+          <span id="seeMoreTxt">zobacz więcej</span> <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BIO ===== -->
+  <section id="bio">
+    <div class="wrap">
+      <div class="eyebrow">
+        <h2 data-i18n="bio_h">o mnie</h2>
+        <span class="rule"></span>
+      </div>
+
+      <div class="bio-layout">
+        <!-- PORTRAIT: put your photo here, e.g. <img src="portrait.jpg" alt="ereska"> (then delete the .ph div) -->
+        <div class="portrait">
+          <div class="ph" data-i18n="portrait_ph">tu wstaw zdjęcie</div>
+          <div class="badge"><i></i><span data-i18n="badge">Warszawa · zdalnie i wyjazdy</span></div>
+        </div>
+
+        <div class="bio-main">
+          <div class="hello">
+            <div class="tag" data-i18n="hello_tag">cześć!</div>
+            <h3 data-i18n-html="hello_h">Jestem <em>ereska</em>.</h3>
+            <p data-i18n="hello_p">Montuję, nagrywam i animuję wideo dla marek, artystów i wydarzeń — od rolek na Instagram po koncerty i filmy wizerunkowe. Zanim cokolwiek nagram, pytam o cel: co widz ma poczuć, zapamiętać albo zrobić po obejrzeniu. Dopiero pod to dobieram tempo, obraz i dźwięk.</p>
+          </div>
+          <a class="btn-solid hello-cta" id="ctaContact" href="#contact"><span data-i18n="bio_cta">Opowiedz mi o projekcie</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== I WORKED WITH ===== -->
+  <section id="clients">
+    <div class="wrap">
+      <div class="eyebrow">
+        <h2 data-i18n="clients_h">zaufali mi</h2>
+        <span class="rule"></span>
+      </div>
+    </div>
+    <div class="marquee" id="marquee">
+      <div class="marquee-track" id="clientTrack">
+        <!-- groups injected by JS — repeated as many times as needed to fill any screen -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="eyebrow"><h2 data-i18n="contact_h">kontakt</h2></div>
+      <p class="lead" data-i18n="contact_lead">Zróbmy coś, co warto obejrzeć.</p>
+      <p class="sub" data-i18n="contact_sub">Napisz kilka zdań o projekcie — odezwę się z pytaniami i propozycją.</p>
+      <div class="contact-points" id="contactPoints">
+      <a class="mail" href="mailto:hello@ereska.studio">hello@ereska.studio</a>
+
+      <!-- INSTAGRAM: set your profile URL and handle here -->
+      <a class="ig-card" href="https://www.instagram.com/ereska.studio/" target="_blank" rel="noopener">
+        <span class="ig-ring"><span>e</span></span>
+        <span class="ig-txt">
+          <b data-i18n="ig_t">Sprawdź mojego Instagrama</b>
+          <small><span>@ereska.studio</span><span class="ig-extra"> · <span data-i18n="ig_s">kulisy i świeże projekty</span></span></small>
+        </span>
+        <span class="ig-arrow"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap">© <span id="yr"></span> ereska.studio — <span data-i18n="footer">wszelkie prawa zastrzeżone</span></footer>
+</main>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Project viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close" data-i18n-aria="close">&times;</button>
+  <div class="lb-inner">
+    <div class="lb-media h" id="lbMedia"></div>
+    <div class="lb-info">
+      <div class="cat" id="lbCat"></div>
+      <h3 id="lbTitle"></h3>
+      <p id="lbDesc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* =========================================================
+     TRANSLATIONS — edit Polish (pl) and English (en) copy here
+     ========================================================= */
+  const I18N = {
+    pl:{
+      meta_title:'ereska.studio — montaż wideo · zdjęcia · motion design',
+      meta_desc:'ereska.studio — montaż wideo, realizacja i motion design. Filmy wizerunkowe, teledyski, treści na social media.',
+      lang_aria:'Przełącz na angielski',
+      nav_work:'projekty', nav_bio:'o mnie', nav_contact:'kontakt',
+      reel_ph:'showreel — wstaw tu showreel.mp4', reel_btn:'obejrzyj showreel',
+      hero_h1:'obrazy w ruchu, tworzone z intencją.',
+      role1:'montaż wideo', role2:'zdjęcia i realizacja', role3:'motion design',
+      work_h:'projekty', work_count:'wybrane realizacje',
+      see_more:'zobacz więcej', see_less:'zwiń',
+      horiz:'poziome', vert:'pionowe',
+      open:'Otwórz', close:'Zamknij', lb_ph:'tu pojawi się wideo',
+      bio_h:'o mnie', portrait_ph:'tu wstaw zdjęcie', badge:'Warszawa · zdalnie i wyjazdy',
+      hello_tag:'cześć!', hello_h:'Jestem <em>ereska</em>.',
+      hello_p:'Montuję, nagrywam i animuję wideo dla marek, artystów i wydarzeń — od rolek na Instagram po koncerty i filmy wizerunkowe. Zanim cokolwiek nagram, pytam o cel: co widz ma poczuć, zapamiętać albo zrobić po obejrzeniu. Dopiero pod to dobieram tempo, obraz i dźwięk.',
+      bio_cta:'Opowiedz mi o projekcie',
+      clients_h:'zaufali mi',
+      contact_h:'kontakt', contact_lead:'Zróbmy coś, co warto obejrzeć.',
+      contact_sub:'Napisz kilka zdań o projekcie — odezwę się z pytaniami i propozycją.',
+      ig_t:'Sprawdź mojego Instagrama', ig_s:'kulisy i świeże projekty',
+      footer:'wszelkie prawa zastrzeżone'
+    },
+    en:{
+      meta_title:'ereska.studio — video editor · videographer · motion designer',
+      meta_desc:'ereska.studio — video editing, videography and motion design. Brand films, music videos, social content.',
+      lang_aria:'Switch to Polish',
+      nav_work:'work', nav_bio:'bio', nav_contact:'contact',
+      reel_ph:'showreel — drop showreel.mp4 here', reel_btn:'watch showreel',
+      hero_h1:'moving pictures, made with intent.',
+      role1:'video editor', role2:'videographer', role3:'motion designer',
+      work_h:'work', work_count:'selected projects',
+      see_more:'see more', see_less:'see less',
+      horiz:'horizontal', vert:'vertical',
+      open:'Open', close:'Close', lb_ph:'embed your video here',
+      bio_h:'bio', portrait_ph:'your photo here', badge:'Warsaw · remote & travel',
+      hello_tag:'hi there!', hello_h:'I\'m <em>ereska</em>.',
+      hello_p:'I edit, shoot and animate video for brands, artists and events — from Instagram reels to concerts and brand films. Before I film anything, I ask what it\'s for: what the viewer should feel, remember or do after watching. Pace, look and sound follow from that.',
+      bio_cta:'Tell me about your project',
+      clients_h:'i worked with',
+      contact_h:'contact', contact_lead:'Let\'s make something worth watching.',
+      contact_sub:'Drop me a few lines about the project — I\'ll get back with questions and a proposal.',
+      ig_t:'Check out my Instagram', ig_s:'behind the scenes & fresh work',
+      footer:'all rights reserved'
+    }
+  };
+
+  /* ---- EDIT YOUR PROJECTS HERE ----   (order = order on the page)
+     title:  project name
+     orient: 'h' (16:9, landscape) or 'v' (vertical)
+     label:  text, or {pl:'…', en:'…'} when the two languages differ
+     thumb:  cover image, e.g. 'thumbs/smartass.jpg'
+             horizontal 1280×720 · vertical 1080×1440 (3:4); omit for a colored placeholder
+     embed:  Vimeo player URL — https://player.vimeo.com/video/<number>
+     desc:   text, or {pl:'…', en:'…'}; leave '' to hide the description
+     The first INITIAL projects show by default; "see more" appears only if there are more. */
+  const projects = [
+    {title:'Legendarny Mecz',           orient:'v', label:'Event',                             thumb:'thumbs/legendarnymecz.jpg',     embed:'https://player.vimeo.com/video/1228540830', desc:'xyz'},
+    {title:'Wielka Warszawska',         orient:'v', label:'Event',                             thumb:'thumbs/wielkawarszawska.jpg',   embed:'https://player.vimeo.com/video/1233101452', desc:'xyz'},
+    {title:'BMW Experience',            orient:'v', label:'Event',                             thumb:'thumbs/bmwexperience.jpg',      embed:'https://player.vimeo.com/video/1233103399', desc:'xyz'},
+    {title:'My Type of Fun',            orient:'v', label:'Reel',                              thumb:'thumbs/mytypeoffun.jpg',        embed:'https://player.vimeo.com/video/1233101371', desc:'xyz'},
+    {title:'Skutery Śnieżne w Rumunii', orient:'v', label:'Reel',                              thumb:'thumbs/skutery.jpg',            embed:'https://player.vimeo.com/video/1228537304', desc:'xyz'},
+    {title:'MIG-15',                    orient:'v', label:'Reel',                              thumb:'thumbs/mig15.jpg',              embed:'https://player.vimeo.com/video/1228537305', desc:'xyz'},
+    {title:'SMARTASS',                  orient:'h', label:'Event',                             thumb:'thumbs/smartass.jpg',           embed:'https://player.vimeo.com/video/1228537377', desc:'xyz'},
+    {title:'Youtube Showreel',          orient:'v', label:'Reel',                              thumb:'thumbs/showreel.jpg',           embed:'https://player.vimeo.com/video/1228537307', desc:'xyz'},
+    {title:'Maic Bandit - AAAUUU!',     orient:'h', label:'Event',                             thumb:'thumbs/aaauuu.jpg',             embed:'https://player.vimeo.com/video/1228537303', desc:'xyz'},
+    {title:'TRAILMARK',                 orient:'h', label:{pl:'Animacja', en:'Animation'},     thumb:'thumbs/trailmark.jpg',          embed:'https://player.vimeo.com/video/1233103456', desc:'xyz'},
+  ];
+
+  const INITIAL = 9;            /* shown before "see more" */
+
+  /* true  = horizontal and vertical films are spread evenly through the grid
+             (each keeps its own order from the list), so landscape films show up at the top too
+     false = exact order of the list above */
+  const MIX_ORIENTATIONS = true;
+
+  function displayOrder(list){
+    if (!MIX_ORIENTATIONS) return list.slice();
+    const H = list.filter(p=>p.orient!=='v'), V = list.filter(p=>p.orient==='v');
+    if (!H.length || !V.length) return list.slice();
+    const n = list.length, slots = new Set();
+    /* evenly spaced positions for the horizontals, e.g. 3 of 10 → positions 1, 5, 8 */
+    H.forEach((_,k)=>slots.add(Math.floor((k + 0.5) * n / H.length)));
+    const out = []; let h = 0, v = 0;
+    for (let i=0;i<n;i++) out.push(slots.has(i) && h < H.length ? H[h++] : (v < V.length ? V[v++] : H[h++]));
+    return out;
+  }
+
+  /* ---- "i worked with" / "zaufali mi" — brands in the carousel ----
+     Each entry can be:
+       • a plain name ............ {name:'Biletyna'}
+       • a LOGO .................. {name:'Biletyna', logo:'logos/biletyna.svg'}
+             SVG or PNG with a transparent background; logos are grey and turn
+             to full color on hover. Options:
+               h:1.3        – make this logo bigger/smaller (1 = default height)
+               mono:false   – always show the logo in full color
+       • brand TYPOGRAPHY ........ {name:'Verde', font:"'Playfair Display', serif", weight:700}
+             Options: weight, italic:true, upper:true, spacing:'.08em',
+                      size:1.2 (scale), color:'#e30613' (brand color, shown on hover;
+                      with mono:false it's always on).
+             The font must be loaded: add it to the Google Fonts <link> in <head>
+             or via @font-face (e.g. a .woff2 file in a fonts/ folder).
+       • add url:'https://…' to any entry to make it a link.
+     If a logo file can't be found, the name is shown as text instead. */
+  const clients = [
+    {name:'Biletyna'},
+    {name:'Maciej Mazurek'},
+    {name:'VenoAds'},
+    {name:'Atlas Films'},
+    {name:'Studio Mira'},
+    {name:'Verde'},
+  ];
+
+  /* ---- SIDE PHOTOS (left & right edges, desktop ≥1440px) ----
+     Add image paths, e.g. 'side/left-1.jpg'. Portrait-oriented photos work best.
+     They crossfade every ROTATE_MS. Leave arrays empty to show soft gradient placeholders. */
+  const sidePhotos = {
+    left:  [],
+    right: []
+  };
+  const ROTATE_MS = 10000;
+
+  /* =========================================================
+     LANGUAGE
+     ========================================================= */
+  const params = new URLSearchParams(location.search);
+  let lang = params.get('lang') === 'en' ? 'en' : 'pl';   /* Polish by default; ?lang=en opens English */
+  const tr = v => (v && typeof v === 'object') ? (v[lang] ?? v.pl ?? '') : (v ?? '');
+  const t  = k => I18N[lang][k] ?? I18N.pl[k] ?? '';
+
+  const langSwitch = document.getElementById('langSwitch');
+  const langKnob = document.getElementById('langKnob');
+
+  function applyLang(l){
+    lang = l;
+    document.documentElement.lang = l;
+    document.title = t('meta_title');
+    document.querySelector('meta[name="description"]').setAttribute('content', t('meta_desc'));
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+    langSwitch.setAttribute('aria-checked', l === 'en' ? 'true' : 'false');
+    langKnob.textContent = l.toUpperCase();
+    document.getElementById('seeMoreTxt').textContent = expanded ? t('see_less') : t('see_more');
+    render();
+    if (current) fillLightboxInfo(current);
+  }
+  langSwitch.addEventListener('click', () => {
+    const next = lang === 'pl' ? 'en' : 'pl';
+    applyLang(next);
+    /* keep the URL shareable without reloading */
+    const u = new URL(location.href);
+    if (next === 'en') u.searchParams.set('lang','en'); else u.searchParams.delete('lang');
+    try { history.replaceState(null, '', u); } catch(e){}
+  });
+
+  /* =========================================================
+     WORK GRID (no categories — horizontal & vertical kept distinct)
+     ========================================================= */
+  const grid = document.getElementById('workGrid');
+  const seeMore = document.getElementById('seeMore');
+  let expanded = false;
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  const colsFor = () => innerWidth > 860 ? 3 : innerWidth > 680 ? 2 : 1;
+  let curCols = colsFor();
+
+  function render(){
+    grid.innerHTML = '';
+    const limit = expanded ? projects.length : INITIAL;
+    /* columns (desktop/tablet) or a flat list (phones use a CSS grid) */
+    let cols = null, heights = null;
+    if (curCols > 1){
+      grid.classList.add('cols');
+      cols = []; heights = [];
+      for (let i=0;i<curCols;i++){ const c=document.createElement('div'); c.className='col'; grid.appendChild(c); cols.push(c); heights.push(0); }
+    } else {
+      grid.classList.remove('cols');
+    }
+    displayOrder(projects).forEach((p,idx)=>{
+      const isV = p.orient === 'v';
+      const el = document.createElement('button');
+      el.className = 'tile '+(isV?'v':'h')+(idx>=limit?' hidden':'');
+      el.setAttribute('aria-label', t('open')+': '+p.title);
+      const ar = isV ? '9:16' : '16:9';
+      const label = tr(p.label);
+      /* colored placeholder underneath; the cover sits on top and is removed if the file is missing */
+      const thumb = '<div class="thumb"></div>' + (p.thumb
+        ? '<img class="thumb" src="'+esc(p.thumb)+'" alt="" loading="lazy" onerror="this.remove()">'
+        : '');
+      el.innerHTML =
+        thumb+
+        '<span class="ar">'+ar+'</span>'+
+        '<span class="play-dot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>'+
+        '<div class="tile-overlay"><span class="cat">'+esc(label)+'</span>'+
+          '<div class="meta"><b>'+esc(p.title)+'</b><small>'+esc(label)+' · '+ar+'</small></div></div>';
+      el.addEventListener('click',()=>openLightbox(p));
+      if (cols){
+        const hidden = idx >= limit;
+        const k = heights.indexOf(Math.min(...heights));
+        cols[hidden ? 0 : k].appendChild(el);
+        if (!hidden) heights[k] += (isV ? 4/3 : 9/16) + 0.05;   /* relative tile height + gap */
+      } else {
+        grid.appendChild(el);
+      }
+    });
+    seeMore.parentElement.style.display = (projects.length > INITIAL) ? 'flex' : 'none';
+  }
+
+  addEventListener('resize',()=>{ const c = colsFor(); if (c !== curCols){ curCols = c; render(); } });
+
+  seeMore.addEventListener('click',()=>{
+    expanded = !expanded;
+    seeMore.classList.toggle('open',expanded);
+    document.getElementById('seeMoreTxt').textContent = expanded ? t('see_less') : t('see_more');
+    render();
+    if (!expanded) document.getElementById('work').scrollIntoView({behavior:'smooth'});
+  });
+
+  /* =========================================================
+     LIGHTBOX (embed URLs used exactly as given)
+     ========================================================= */
+  const lb=document.getElementById('lb'), lbMedia=document.getElementById('lbMedia'),
+        lbCat=document.getElementById('lbCat'), lbTitle=document.getElementById('lbTitle'),
+        lbDesc=document.getElementById('lbDesc'), lbClose=document.getElementById('lbClose');
+  let current = null;
+
+  function fillLightboxInfo(p){
+    lbCat.textContent = tr(p.label) + ' · ' + (p.orient==='v' ? '9:16' : '16:9');
+    lbTitle.textContent = p.title;
+    const d = tr(p.desc);
+    lbDesc.textContent = d;
+    lbDesc.style.display = d ? '' : 'none';
+    const ph = lbMedia.querySelector('.ph2');
+    if (ph) ph.textContent = t('lb_ph');
+  }
+  function openLightbox(p){
+    current = p;
+    lbMedia.className='lb-media '+(p.orient==='v'?'v':'h');
+    lbMedia.innerHTML = p.embed
+      ? '<iframe src="'+p.embed+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>'
+      : '<div class="ph2"></div>';
+    fillLightboxInfo(p);
+    lb.classList.add('open');
+    document.body.style.overflow='hidden';
+    lbClose.focus({preventScroll:true});
+  }
+  function closeLightbox(){
+    lb.classList.remove('open');
+    lbMedia.innerHTML='';
+    document.body.style.overflow='';
+    current = null;
+  }
+  lbClose.addEventListener('click',closeLightbox);
+  lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape' && current)closeLightbox();});
+
+  /* showreel button — scrolls to top reel / hook for full-reel modal */
+  document.getElementById('reelBtn').addEventListener('click',()=>{
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  /* =========================================================
+     "Opowiedz mi o projekcie" → scroll to contact + highlight it
+     ========================================================= */
+  (function(){
+    const cta = document.getElementById('ctaContact');
+    const box = document.getElementById('contactPoints');
+    const mail = box.querySelector('.mail');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function flash(){
+      box.classList.remove('flash');
+      void box.offsetWidth;               /* restart animation on repeated clicks */
+      box.classList.add('flash');
+      clearTimeout(box._t);
+      box._t = setTimeout(()=>box.classList.remove('flash'), 3600);
+      mail.focus({preventScroll:true});
+    }
+    cta.addEventListener('click', e=>{
+      e.preventDefault();
+      const r = box.getBoundingClientRect();
+      const offset = (r.top + r.height/2) - innerHeight/2;
+      if (Math.abs(offset) < 30){ flash(); return; }   /* already in view */
+      let fired = false;
+      const go = () => { if (fired) return; fired = true; flash(); };
+      if ('onscrollend' in window) addEventListener('scrollend', go, {once:true});
+      setTimeout(go, reduce ? 50 : 1100);              /* fallback (Safari) */
+      box.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
+    });
+  })();
+
+  /* =========================================================
+     "I WORKED WITH" — seamless, never-ending marquee
+     Repeats the list enough times to always cover the screen and
+     wraps by the exact pixel width of one set, so no gaps or jumps.
+     ========================================================= */
+  (function(){
+    const marquee = document.getElementById('marquee');
+    const track = document.getElementById('clientTrack');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = clients.map(c => typeof c === 'string' ? {name:c} : c);
+
+    function itemHTML(it, hidden){
+      const tag = it.url ? 'a' : 'span';
+      const link = it.url ? ' href="'+esc(it.url)+'" target="_blank" rel="noopener"'+(hidden?' tabindex="-1"':'') : '';
+      const mono = it.mono === false ? '' : ' mono';
+      if (it.logo && it._ok !== false){
+        return '<'+tag+' class="mq-item mq-logo'+mono+'"'+link+' style="--h:'+(+it.h||1)+'">'+
+               '<img src="'+esc(it.logo)+'" alt="'+(hidden?'':esc(it.name))+'" draggable="false"></'+tag+'>';
+      }
+      let st = '';
+      if (it.font)    st += 'font-family:'+it.font+';';
+      if (it.weight)  st += 'font-weight:'+it.weight+';';
+      if (it.italic)  st += 'font-style:italic;';
+      if (it.upper)   st += 'text-transform:uppercase;';
+      if (it.spacing) st += 'letter-spacing:'+it.spacing+';';
+      if (it.size)    st += 'font-size:calc(var(--mq-size) * '+(+it.size)+');';
+      if (it.color)   st += '--brand:'+it.color+';';
+      return '<'+tag+' class="mq-item mq-text'+mono+'"'+link+(st?' style="'+esc(st)+'"':'')+'>'+esc(it.name)+'</'+tag+'>';
+    }
+    const group = (hidden) => '<div class="marquee-group"'+(hidden?' aria-hidden="true"':'')+'>'+
+                  items.map(it=>itemHTML(it,hidden)).join('')+'</div>';
+
+    /* check logo files first, so the set width is measured with real logo sizes */
+    const preload = Promise.all(items.filter(it=>it.logo).map(it => new Promise(res=>{
+      const im = new Image();
+      im.onload  = () => { it._ok = true;  res(); };
+      im.onerror = () => { it._ok = false; res(); };
+      im.src = it.logo;
+    })));
+
+    let setW = 0, x = 0, last = 0, hover = false, visible = true;
+
+    if (reduce){
+      marquee.classList.add('static');
+      preload.then(()=>{ track.innerHTML = group(false); });
+      return;
+    }
+
+    let rT;
+    const rebuildSoon = () => { clearTimeout(rT); rT = setTimeout(build,150); };
+    function build(){
+      track.innerHTML = group(false);
+      const first = track.firstElementChild;
+      first.querySelectorAll('img').forEach(i=>{ if(!i.complete) i.addEventListener('load', rebuildSoon, {once:true}); });
+      setW = first.getBoundingClientRect().width;
+      if (!setW) return;
+      const copies = Math.ceil(marquee.clientWidth / setW) + 1;
+      let html = group(false);
+      for (let i=0;i<copies;i++) html += group(true);
+      track.innerHTML = html;
+      x = ((x % setW) - setW) % setW;   /* keep current offset in range */
+    }
+    function speed(){ return innerWidth < 680 ? 34 : 48; }   /* px per second */
+    function tick(now){
+      if (last && setW && visible && !hover && !document.hidden){
+        const dt = Math.min(now - last, 50) / 1000;   /* clamp: no jumps after tab switch */
+        x -= speed() * dt;
+        if (x <= -setW) x += setW;
+        track.style.transform = 'translate3d('+x.toFixed(2)+'px,0,0)';
+      }
+      last = now;
+      requestAnimationFrame(tick);
+    }
+    preload.then(build);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(()=>preload.then(build));
+    addEventListener('resize', rebuildSoon);
+    if (matchMedia('(hover:hover)').matches){
+      marquee.addEventListener('mouseenter',()=>hover=true);
+      marquee.addEventListener('mouseleave',()=>hover=false);
+    }
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(es=>{ visible = es[0].isIntersecting; },{rootMargin:'100px'}).observe(marquee);
+    }
+    requestAnimationFrame(tick);
+  })();
+
+  /* =========================================================
+     SIDE PHOTO RAILS — soft-masked photos, crossfade every ~10s
+     ========================================================= */
+  (function(){
+    const PH = [
+      'radial-gradient(70% 55% at 30% 35%,rgba(31,79,176,.55) 0%,transparent 70%),radial-gradient(60% 50% at 70% 75%,rgba(16,33,63,.45) 0%,transparent 70%),linear-gradient(170deg,#dfe6f3,#b9c8e4)',
+      'radial-gradient(60% 50% at 65% 30%,rgba(111,155,255,.5) 0%,transparent 70%),radial-gradient(70% 60% at 25% 80%,rgba(31,79,176,.4) 0%,transparent 70%),linear-gradient(200deg,#e6ebf5,#c3cfe6)',
+      'radial-gradient(65% 55% at 40% 60%,rgba(16,33,63,.5) 0%,transparent 70%),radial-gradient(55% 45% at 70% 20%,rgba(31,79,176,.35) 0%,transparent 70%),linear-gradient(160deg,#d9e1f0,#aebfdf)'
+    ];
+    function setup(el, list, delay){
+      const srcs = list.length ? list.map(s=>'url("'+s+'")') : PH;
+      const slides = srcs.map(bg=>{
+        const d = document.createElement('div');
+        d.className = 'rail-slide';
+        d.style.backgroundImage = bg;
+        el.appendChild(d);
+        return d;
+      });
+      let i = 0;
+      requestAnimationFrame(()=>slides[0].classList.add('on'));
+      if (slides.length < 2) return;
+      setTimeout(()=>{
+        setInterval(()=>{
+          slides[i].classList.remove('on');
+          i = (i+1) % slides.length;
+          slides[i].classList.add('on');
+        }, ROTATE_MS);
+      }, delay);
+    }
+    /* only build when the rails can actually be shown (wide desktop) */
+    const mq = matchMedia('(min-width:1440px)');
+    let built = false;
+    function init(){
+      if (built || !mq.matches) return;
+      built = true;
+      setup(document.getElementById('railL'), sidePhotos.left, 0);
+      /* if only left photos are given, the right rail reuses them in reverse order */
+      setup(document.getElementById('railR'), sidePhotos.right.length ? sidePhotos.right : sidePhotos.left.slice().reverse(), 900);
+    }
+    init();
+    mq.addEventListener ? mq.addEventListener('change',init) : mq.addListener(init);
+
+    /* hide rails over the full-bleed hero and the contact block */
+    const hero = document.getElementById('hero'), contact = document.getElementById('contact');
+    let ticking = false;
+    function update(){
+      ticking = false;
+      const vh = innerHeight;
+      const on = hero.getBoundingClientRect().bottom < vh*0.35 && contact.getBoundingClientRect().top > vh*0.6;
+      document.body.classList.toggle('rails-on', on);
+    }
+    addEventListener('scroll',()=>{ if(!ticking){ ticking=true; requestAnimationFrame(update);} },{passive:true});
+    addEventListener('resize',update);
+    update();
+  })();
+
+  /* initial render in Polish (or ?lang=en) */
+  applyLang(lang);
+</script>
+</body>
+</html>
